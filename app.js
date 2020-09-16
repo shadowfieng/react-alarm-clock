@@ -1,3 +1,4 @@
+import React from "react";
 /* a function which performs zerofill on a numeric */
 var paddy = function (n, p, c) {
     var pad_char = typeof c !== "undefined" ? c : "0";
@@ -22,7 +23,7 @@ var ext2mime = function (ext) {
         ogg: "audio/ogg",
         oga: "audio/ogg",
         wav: "audio/wav",
-        weba: "audio/webm"
+        weba: "audio/webm",
     };
 
     return mime[ext];
@@ -32,23 +33,28 @@ var ext2mime = function (ext) {
 var data = [];
 
 /* the default sounds for selection */
-var bells = [{
-    name: "piano-melody",
-    type: "audio/wav",
-    path: "bell/70214__qlc__65bpm-piano-melody-0589.wav"
-}, {
-    name: "fractal-ramp-sonnet",
-    type: "audio/mpeg",
-    path: "bell/70002__qlc__240bpm-fractal-ramp-sonnet-track-1.mp3"
-}, {
-    name: "osng",
-    type: "audio/wav",
-    path: "bell/70213__qlc__152bpm-osng.wav"
-}, {
-    name: "zichus",
-    type: "audio/wav",
-    path: "bell/70217__qlc__85bpm-zichus.wav"
-}];
+var bells = [
+    {
+        name: "piano-melody",
+        type: "audio/wav",
+        path: "bell/70214__qlc__65bpm-piano-melody-0589.wav",
+    },
+    {
+        name: "fractal-ramp-sonnet",
+        type: "audio/mpeg",
+        path: "bell/70002__qlc__240bpm-fractal-ramp-sonnet-track-1.mp3",
+    },
+    {
+        name: "osng",
+        type: "audio/wav",
+        path: "bell/70213__qlc__152bpm-osng.wav",
+    },
+    {
+        name: "zichus",
+        type: "audio/wav",
+        path: "bell/70217__qlc__85bpm-zichus.wav",
+    },
+];
 
 /* Компонент часов, отображающий текущее время */
 var Clock = React.createClass({
@@ -59,11 +65,14 @@ var Clock = React.createClass({
     },
     componentDidMount: function () {
         var state = this.state;
-        state.id = setInterval(function () {
-            var state = this.state;
-            state.time = new Date();
-            this.setState(state);
-        }.bind(this), 1000);
+        state.id = setInterval(
+            function () {
+                var state = this.state;
+                state.time = new Date();
+                this.setState(state);
+            }.bind(this),
+            1000
+        );
         this.setState(state);
     },
     componentWillUnmount: function () {
@@ -75,7 +84,7 @@ var Clock = React.createClass({
             { className: "text-center wall-clock" },
             $.format.date(this.state.time, "HH:mm:ss")
         );
-    }
+    },
 });
 
 /* Компонент сигнала, для выбора и воспроизведения аудио-файла */
@@ -91,7 +100,7 @@ var Bell = React.createClass({
             bell: this.props.bells[0],
             inputURL: "",
             errorFile: false,
-            errorURL: false
+            errorURL: false,
         };
     },
     getDefaultProps: function () {
@@ -99,13 +108,13 @@ var Bell = React.createClass({
             bells: [],
             onAddAudio: function (file) {
                 console.log(file);
-            }
+            },
         };
     },
     handleChange: function (event) {
         var key = event.target.value;
         this.setState({
-            bell: this.props.bells[key]
+            bell: this.props.bells[key],
         });
     },
     handlePlay: function () {
@@ -119,7 +128,18 @@ var Bell = React.createClass({
         this.refs.audio.getDOMNode().pause();
     },
     handleAddLocalSound: function (event) {
-        var supportAudioType = ["audio/ogg", "audio/webm", "audio/mpeg", "audio/ogg", "audio/wav", "audio/x-wav", "audio/mp3", "audio/mp4", "audio/flac", "audio/x-flac"];
+        var supportAudioType = [
+            "audio/ogg",
+            "audio/webm",
+            "audio/mpeg",
+            "audio/ogg",
+            "audio/wav",
+            "audio/x-wav",
+            "audio/mp3",
+            "audio/mp4",
+            "audio/flac",
+            "audio/x-flac",
+        ];
         var file = event.target.files[0];
         var ext = getExt(file.name);
         var type = file.type ? file.type : ext2mime(ext);
@@ -128,7 +148,7 @@ var Bell = React.createClass({
             this.props.onAddAudio({
                 name: file.name,
                 type: type,
-                path: URL.createObjectURL(file)
+                path: URL.createObjectURL(file),
             });
             this.setState({ errorFile: false, errorURL: false });
         } else {
@@ -144,7 +164,7 @@ var Bell = React.createClass({
             this.props.onAddAudio({
                 name: url.split("/").pop(),
                 path: url,
-                type: type
+                type: type,
             });
             this.setState({ errorFile: false, errorURL: false, inputURL: "" });
         } else {
@@ -183,7 +203,7 @@ var Bell = React.createClass({
                         "select",
                         {
                             className: "form-control",
-                            onChange: this.handleChange
+                            onChange: this.handleChange,
                         },
                         options
                     ),
@@ -191,17 +211,21 @@ var Bell = React.createClass({
                         "button",
                         {
                             className: "btn btn-primary",
-                            onClick: this.handlePlay
+                            onClick: this.handlePlay,
                         },
-                        React.createElement("span", { className: "glyphicon glyphicon-play" })
+                        React.createElement("span", {
+                            className: "glyphicon glyphicon-play",
+                        })
                     ),
                     React.createElement(
                         "button",
                         {
                             className: "btn btn-default",
-                            onClick: this.handleStop
+                            onClick: this.handleStop,
                         },
-                        React.createElement("span", { className: "glyphicon glyphicon-stop" })
+                        React.createElement("span", {
+                            className: "glyphicon glyphicon-stop",
+                        })
                     )
                 ),
                 React.createElement(
@@ -219,7 +243,7 @@ var Bell = React.createClass({
                             "label",
                             {
                                 htmlFor: "local-sound",
-                                className: "btn btn-default"
+                                className: "btn btn-default",
                             },
                             "\u0412\u044B\u0431\u0440\u0430\u0442\u044C..."
                         ),
@@ -227,7 +251,7 @@ var Bell = React.createClass({
                             id: "local-sound",
                             className: "hidden",
                             type: "file",
-                            onChange: this.handleAddLocalSound
+                            onChange: this.handleAddLocalSound,
                         })
                     ),
                     this.state.errorFile ? errorAlert : undefined
@@ -246,13 +270,13 @@ var Bell = React.createClass({
                         React.createElement("input", {
                             className: "form-control",
                             onChange: this.handleInputURL,
-                            value: this.state.inputURL
+                            value: this.state.inputURL,
                         }),
                         React.createElement(
                             "button",
                             {
                                 className: "btn btn-default",
-                                onClick: this.handleAddAudioURL
+                                onClick: this.handleAddAudioURL,
                             },
                             "\u0414\u043E\u0431\u0430\u0432\u0438\u0442\u044C"
                         )
@@ -261,7 +285,7 @@ var Bell = React.createClass({
                 )
             )
         );
-    }
+    },
 });
 
 /* Компонент включения */
@@ -270,17 +294,26 @@ var AlarmEntry = React.createClass({
 
     enable: function () {
         var currentTime = new Date();
-        var interval = this.props.time.getHours() * 3600 + this.props.time.getMinutes() * 60 + this.props.time.getSeconds();
-        interval -= currentTime.getHours() * 3600 + currentTime.getMinutes() * 60 + currentTime.getSeconds();
+        var interval =
+            this.props.time.getHours() * 3600 +
+            this.props.time.getMinutes() * 60 +
+            this.props.time.getSeconds();
+        interval -=
+            currentTime.getHours() * 3600 +
+            currentTime.getMinutes() * 60 +
+            currentTime.getSeconds();
         interval *= 1000;
 
         if (interval < 0) interval += 86000 * 1000;
 
-        var id = setTimeout(function () {
-            this.setState($.extend(this.state, { enable: false }));
-            this.props.onRing();
-            this.disable();
-        }.bind(this), interval);
+        var id = setTimeout(
+            function () {
+                this.setState($.extend(this.state, { enable: false }));
+                this.props.onRing();
+                this.disable();
+            }.bind(this),
+            interval
+        );
 
         var state = this.state;
         state.intervalId = id;
@@ -300,14 +333,16 @@ var AlarmEntry = React.createClass({
         this.handleSwitch();
     },
     handleSwitch: function () {
-        if (this.state.enable && this.state.intervalId == 0) this.enable();else if (!this.state.enable && this.state.intervalId != 0) this.disable();
+        if (this.state.enable && this.state.intervalId == 0) this.enable();
+        else if (!this.state.enable && this.state.intervalId != 0)
+            this.disable();
     },
     getInitialState: function () {
         return {
             time: this.props.time,
             comment: this.props.comment,
             enable: true,
-            intervalId: 0
+            intervalId: 0,
         };
     },
     getDefaultProps: function () {
@@ -316,7 +351,7 @@ var AlarmEntry = React.createClass({
             onClose: function () {},
             enable: true,
             comment: "",
-            time: new Date()
+            time: new Date(),
         };
     },
     componentDidMount: function () {
@@ -333,7 +368,7 @@ var AlarmEntry = React.createClass({
                 type: "checkbox",
                 onChange: this.handleCheck,
                 ref: "checkbox",
-                checked: this.state.enable
+                checked: this.state.enable,
             }),
             React.createElement(
                 "span",
@@ -352,16 +387,12 @@ var AlarmEntry = React.createClass({
                     type: "button",
                     className: "close",
                     "aria-label": "Close",
-                    onClick: this.props.onClose
+                    onClick: this.props.onClose,
                 },
-                React.createElement(
-                    "span",
-                    { "aria-hidden": "true" },
-                    "\xD7"
-                )
+                React.createElement("span", { "aria-hidden": "true" }, "\xD7")
             )
         );
-    }
+    },
 });
 
 /* Список будильников */
@@ -382,16 +413,18 @@ var AlarmList = React.createClass({
         this.setState(state);
     },
     render: function () {
-        var alarmNodes = this.state.data.map(function (alarm, i) {
-            if (alarm === undefined) return undefined;
-            return React.createElement(AlarmEntry, {
-                time: alarm.time,
-                comment: alarm.comment,
-                onClose: this.handleEntryClose.bind(this, i),
-                key: i,
-                onRing: this.props.onRing
-            });
-        }.bind(this));
+        var alarmNodes = this.state.data.map(
+            function (alarm, i) {
+                if (alarm === undefined) return undefined;
+                return React.createElement(AlarmEntry, {
+                    time: alarm.time,
+                    comment: alarm.comment,
+                    onClose: this.handleEntryClose.bind(this, i),
+                    key: i,
+                    onRing: this.props.onRing,
+                });
+            }.bind(this)
+        );
 
         var list = function () {
             if (this.state.data.length == 0) {
@@ -410,7 +443,7 @@ var AlarmList = React.createClass({
             { className: "alarmList list-group" },
             list()
         );
-    }
+    },
 });
 
 /* Компонент для переключения времени */
@@ -418,7 +451,10 @@ var AlarmDigit = React.createClass({
     displayName: "AlarmDigit",
 
     getInterval: function (counter) {
-        if (counter > 5) return 75;else if (counter > 20) return 50;else if (counter > 30) return 5;else return 150;
+        if (counter > 5) return 75;
+        else if (counter > 20) return 50;
+        else if (counter > 30) return 5;
+        else return 150;
     },
     getInitialState: function () {
         var val = typeof this.props.val !== "undefined" ? this.props.val : 0;
@@ -427,7 +463,7 @@ var AlarmDigit = React.createClass({
             increasing: 0,
             decreasing: 0,
             increaseCounter: 0,
-            decreaseCounter: 0
+            decreaseCounter: 0,
         };
     },
     handleCarry: function () {
@@ -445,7 +481,11 @@ var AlarmDigit = React.createClass({
             state.value = 0;
         }
 
-        if (once !== true) state.increasing = setTimeout(this.handleIncrease, this.getInterval(this.state.increaseCounter));
+        if (once !== true)
+            state.increasing = setTimeout(
+                this.handleIncrease,
+                this.getInterval(this.state.increaseCounter)
+            );
         this.setState(state);
     },
     handleStartIncrease: function () {
@@ -464,10 +504,15 @@ var AlarmDigit = React.createClass({
         state.value--;
         state.decreaseCounter++;
         if (state.value < 0) {
-            if (typeof this.props.onBorrow === "function") this.props.onBorrow();
+            if (typeof this.props.onBorrow === "function")
+                this.props.onBorrow();
             state.value = this.props.numberSystem - 1;
         }
-        if (once !== true) state.decreasing = setTimeout(this.handleDecrease, this.getInterval(this.state.decreaseCounter));
+        if (once !== true)
+            state.decreasing = setTimeout(
+                this.handleDecrease,
+                this.getInterval(this.state.decreaseCounter)
+            );
         this.setState(state);
     },
     handleStartDecrease: function () {
@@ -484,7 +529,8 @@ var AlarmDigit = React.createClass({
     },
     handleChange: function (event) {
         var value = event.target.value.slice(-2);
-        if (value >= this.props.numberSystem) value = event.target.value.slice(-1);
+        if (value >= this.props.numberSystem)
+            value = event.target.value.slice(-1);
         console.log(value);
         this.setState($.extend(this.state, { value: value }));
     },
@@ -516,11 +562,11 @@ var AlarmDigit = React.createClass({
                 {
                     className: "increase btn btn-default",
                     onMouseDown: this.handleStartIncrease,
-                    onMouseUp: this.handleStopIncrease
+                    onMouseUp: this.handleStopIncrease,
                 },
                 React.createElement("span", {
                     className: "glyphicon glyphicon-menu-up",
-                    "aria-hidden": "true"
+                    "aria-hidden": "true",
                 })
             ),
             React.createElement("input", {
@@ -529,22 +575,22 @@ var AlarmDigit = React.createClass({
                 value: value,
                 onChange: this.handleChange,
                 onKeyDown: this.handleKeyDown,
-                onWheel: this.handleWheel
+                onWheel: this.handleWheel,
             }),
             React.createElement(
                 "button",
                 {
                     className: "decrease btn btn-default",
                     onMouseDown: this.handleStartDecrease,
-                    onMouseUp: this.handleStopDecrease
+                    onMouseUp: this.handleStopDecrease,
                 },
                 React.createElement("span", {
                     className: "glyphicon glyphicon-menu-down",
-                    "aria-hidden": "true"
+                    "aria-hidden": "true",
                 })
             )
         );
-    }
+    },
 });
 
 /* Главный компонент */
@@ -570,12 +616,12 @@ var Alarm = React.createClass({
         date.setSeconds(this.refs.secondDigit.state.value);
         this.refs.alarmList.handleAddEntry({
             time: date,
-            comment: this.refs.comment.getDOMNode().value
+            comment: this.refs.comment.getDOMNode().value,
         });
     },
     handleAddAudio: function (audio) {
         this.setState({
-            bells: this.state.bells.concat(audio)
+            bells: this.state.bells.concat(audio),
         });
     },
     render: function () {
@@ -593,21 +639,21 @@ var Alarm = React.createClass({
                     React.createElement(AlarmDigit, {
                         numberSystem: 24,
                         val: date.getHours(),
-                        ref: "hourDigit"
+                        ref: "hourDigit",
                     }),
                     React.createElement(AlarmDigit, {
                         numberSystem: 60,
                         val: date.getMinutes(),
                         onCarry: this.handleCarry.bind(this, "hourDigit"),
                         onBorrow: this.handleBorrow.bind(this, "hourDigit"),
-                        ref: "minuteDigit"
+                        ref: "minuteDigit",
                     }),
                     React.createElement(AlarmDigit, {
                         numberSystem: 60,
                         val: date.getSeconds(),
                         onCarry: this.handleCarry.bind(this, "minuteDigit"),
                         onBorrow: this.handleBorrow.bind(this, "minuteDigit"),
-                        ref: "secondDigit"
+                        ref: "secondDigit",
                     })
                 ),
                 React.createElement(
@@ -617,19 +663,20 @@ var Alarm = React.createClass({
                         className: "form-control",
                         type: "text",
                         ref: "comment",
-                        placeholder: "\u041E\u0441\u0442\u0430\u0432\u044C\u0442\u0435 \u043A\u043E\u043C\u043C\u0435\u043D\u0442\u0430\u0440\u0438\u0439...",
-                        ref: "comment"
+                        placeholder:
+                            "\u041E\u0441\u0442\u0430\u0432\u044C\u0442\u0435 \u043A\u043E\u043C\u043C\u0435\u043D\u0442\u0430\u0440\u0438\u0439...",
+                        ref: "comment",
                     }),
                     React.createElement(
                         "button",
                         {
                             className: "btn btn-default",
                             type: "button",
-                            onClick: this.handleAddAlarm
+                            onClick: this.handleAddAlarm,
                         },
                         React.createElement("span", {
                             className: "glyphicon glyphicon-plus",
-                            "aria-hidden": "true"
+                            "aria-hidden": "true",
                         })
                     )
                 ),
@@ -641,7 +688,7 @@ var Alarm = React.createClass({
                 React.createElement(Bell, {
                     ref: "bell",
                     bells: this.state.bells,
-                    onAddAudio: this.handleAddAudio
+                    onAddAudio: this.handleAddAudio,
                 }),
                 React.createElement(
                     "h2",
@@ -651,11 +698,14 @@ var Alarm = React.createClass({
                 React.createElement(AlarmList, {
                     data: data,
                     ref: "alarmList",
-                    onRing: this.handleRing
+                    onRing: this.handleRing,
                 })
             )
         );
-    }
+    },
 });
 
-React.render(React.createElement(Alarm, null), document.getElementById("content"));
+React.render(
+    React.createElement(Alarm, null),
+    document.getElementById("content")
+);
