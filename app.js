@@ -17,7 +17,12 @@ var getExt = function (filename) {
 
 var ext2mime = function (ext) {
     var mime = {
-        цц
+        mp3: "audio/mpeg",
+        flac: "audio/flac",
+        ogg: "audio/ogg",
+        oga: "audio/ogg",
+        wav: "audio/wav",
+        weba: "audio/webm"
     };
 
     return mime[ext];
@@ -45,7 +50,7 @@ var bells = [{
     path: "bell/70217__qlc__85bpm-zichus.wav"
 }];
 
-/* A clock component displaying the current time */
+/* Компонент часов, отображающий текущее время */
 var Clock = React.createClass({
     displayName: "Clock",
 
@@ -73,7 +78,7 @@ var Clock = React.createClass({
     }
 });
 
-/* A component for selecting and playing a sound */
+/* Компонент сигнала, для выбора и воспроизведения аудио-файла */
 var Bell = React.createClass({
     displayName: "Bell",
 
@@ -259,7 +264,7 @@ var Bell = React.createClass({
     }
 });
 
-/* A single alarm record */
+/* Компонент включения */
 var AlarmEntry = React.createClass({
     displayName: "AlarmEntry",
 
@@ -359,7 +364,7 @@ var AlarmEntry = React.createClass({
     }
 });
 
-/* Alarm list */
+/* Список будильников */
 var AlarmList = React.createClass({
     displayName: "AlarmList",
 
@@ -408,7 +413,7 @@ var AlarmList = React.createClass({
     }
 });
 
-/* A component for selecting a number */
+/* Компонент для переключения времени */
 var AlarmDigit = React.createClass({
     displayName: "AlarmDigit",
 
@@ -542,7 +547,7 @@ var AlarmDigit = React.createClass({
     }
 });
 
-/* main component */
+/* Главный компонент */
 var Alarm = React.createClass({
     displayName: "Alarm",
 
