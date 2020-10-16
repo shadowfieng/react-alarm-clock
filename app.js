@@ -9,7 +9,7 @@ var paddy = function (n, p, c) {
 var isValidUrl = function (url) {
     var regex = /^(http|https):\/\/[\w-]+(\.[\w-]+)+([\w.,@?^=%&amp;:/~+#-]*[\w@?^=%&amp;/~+#-])?$/i;
     return !!url.match(regex);
-};
+};б
 
 var getExt = function (filename) {
     var regex = /(?:\.([^.]+))?$/i;
